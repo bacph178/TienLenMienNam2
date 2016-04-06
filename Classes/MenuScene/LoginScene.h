@@ -2,8 +2,8 @@
 #define __LOGIN_SCENE_H__
 
 #include "cocos2d.h"
-
-#include <MenuScene/RegisterScene.h>
+#include "zlib.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -19,8 +19,8 @@ public:
     
     void menuCallBack(Ref *pSender, Widget::TouchEventType eventType);
     
-    
     static void readFrom(std::vector<char> read_str, int len);
+    static std::vector<char> decompress_gzip2(const char* byte_arr, uLong length);
     
 	
 	// implement the "static create()" method manually

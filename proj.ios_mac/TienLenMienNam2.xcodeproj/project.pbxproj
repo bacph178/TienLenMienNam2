@@ -372,6 +372,15 @@
 		2F850B6A1CB4C87B00813AFC /* toogle_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F850A611CB4C87B00813AFC /* toogle_on.png */; };
 		2F850B6B1CB4C87B00813AFC /* toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F850A621CB4C87B00813AFC /* toolbar.png */; };
 		2F850B6C1CB4C87B00813AFC /* toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F850A621CB4C87B00813AFC /* toolbar.png */; };
+		2F850B6F1CB4EA4500813AFC /* ShowGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F850B6D1CB4EA4500813AFC /* ShowGame.cpp */; };
+		2F850B701CB4EA4500813AFC /* ShowGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F850B6D1CB4EA4500813AFC /* ShowGame.cpp */; };
+		2F8CB3041CB4F7A6008C2435 /* TLMienNam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB3021CB4F7A6008C2435 /* TLMienNam.cpp */; };
+		2F8CB3081CB4F82A008C2435 /* CardSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB3061CB4F82A008C2435 /* CardSprite.cpp */; };
+		2F8CB3091CB4FBE2008C2435 /* CardSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB3061CB4F82A008C2435 /* CardSprite.cpp */; };
+		2F8CB30C1CB5020D008C2435 /* Popup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB30A1CB5020D008C2435 /* Popup.cpp */; };
+		2F8CB30D1CB5020D008C2435 /* Popup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB30A1CB5020D008C2435 /* Popup.cpp */; };
+		2F8CB3101CB5052B008C2435 /* PopupSetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */; };
+		2F8CB3111CB5052B008C2435 /* PopupSetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */; };
 		3EACC98F19EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		3EACC99019EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
@@ -702,6 +711,16 @@
 		2F850A601CB4C87B00813AFC /* toogle_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toogle_off.png; sourceTree = "<group>"; };
 		2F850A611CB4C87B00813AFC /* toogle_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toogle_on.png; sourceTree = "<group>"; };
 		2F850A621CB4C87B00813AFC /* toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar.png; sourceTree = "<group>"; };
+		2F850B6D1CB4EA4500813AFC /* ShowGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShowGame.cpp; sourceTree = "<group>"; };
+		2F850B6E1CB4EA4500813AFC /* ShowGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowGame.h; sourceTree = "<group>"; };
+		2F8CB3021CB4F7A6008C2435 /* TLMienNam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TLMienNam.cpp; sourceTree = "<group>"; };
+		2F8CB3031CB4F7A6008C2435 /* TLMienNam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLMienNam.h; sourceTree = "<group>"; };
+		2F8CB3061CB4F82A008C2435 /* CardSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CardSprite.cpp; sourceTree = "<group>"; };
+		2F8CB3071CB4F82A008C2435 /* CardSprite.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CardSprite.hpp; sourceTree = "<group>"; };
+		2F8CB30A1CB5020D008C2435 /* Popup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Popup.cpp; sourceTree = "<group>"; };
+		2F8CB30B1CB5020D008C2435 /* Popup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Popup.hpp; sourceTree = "<group>"; };
+		2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PopupSetting.cpp; sourceTree = "<group>"; };
+		2F8CB30F1CB5052B008C2435 /* PopupSetting.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PopupSetting.hpp; sourceTree = "<group>"; };
 		3EACC98E19EE6D4300EB3C5E /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -879,12 +898,16 @@
 		2F8508ED1CB4A24E00813AFC /* MenuScene */ = {
 			isa = PBXGroup;
 			children = (
+				2F850B6D1CB4EA4500813AFC /* ShowGame.cpp */,
+				2F850B6E1CB4EA4500813AFC /* ShowGame.h */,
 				2F8509D31CB4BE0000813AFC /* RegisterScene.cpp */,
 				2F8509D41CB4BE0000813AFC /* RegisterScene.h */,
 				2F8509CF1CB4BD9900813AFC /* LoginScene.cpp */,
 				2F8509D01CB4BD9900813AFC /* LoginScene.h */,
 				2F8509CB1CB4BBD600813AFC /* IntroScene.cpp */,
 				2F8509CC1CB4BBD600813AFC /* IntroScene.h */,
+				2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */,
+				2F8CB30F1CB5052B008C2435 /* PopupSetting.hpp */,
 			);
 			path = MenuScene;
 			sourceTree = "<group>";
@@ -892,6 +915,8 @@
 		2F8508EE1CB4A25900813AFC /* GameScene */ = {
 			isa = PBXGroup;
 			children = (
+				2F8CB3021CB4F7A6008C2435 /* TLMienNam.cpp */,
+				2F8CB3031CB4F7A6008C2435 /* TLMienNam.h */,
 			);
 			path = GameScene;
 			sourceTree = "<group>";
@@ -911,6 +936,8 @@
 				2F8509BC1CB4BBCD00813AFC /* MSprite.hpp */,
 				2F8509BD1CB4BBCD00813AFC /* MText.cpp */,
 				2F8509BE1CB4BBCD00813AFC /* MText.hpp */,
+				2F8CB30A1CB5020D008C2435 /* Popup.cpp */,
+				2F8CB30B1CB5020D008C2435 /* Popup.hpp */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -1044,6 +1071,15 @@
 				2F8509D81CB4C00800813AFC /* GameConfig.h */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		2F8CB3051CB4F818008C2435 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				2F8CB3061CB4F82A008C2435 /* CardSprite.cpp */,
+				2F8CB3071CB4F82A008C2435 /* CardSprite.hpp */,
+			);
+			path = Objects;
 			sourceTree = "<group>";
 		};
 		46880B7519C43A67006E1F66 /* Resources */ = {
@@ -1193,6 +1229,7 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2F8CB3051CB4F818008C2435 /* Objects */,
 				2F8509D91CB4C7B000813AFC /* CommonSocket.h */,
 				2F8509DA1CB4C7B000813AFC /* DefaultSocket.cpp */,
 				2F8509DB1CB4C7B000813AFC /* DefaultSocket.h */,
@@ -1683,9 +1720,11 @@
 				2F8509C51CB4BBCD00813AFC /* MLabel.cpp in Sources */,
 				2F8509A61CB4A42900813AFC /* wire_format_lite.cc in Sources */,
 				2F8509881CB4A42900813AFC /* message_lite.cc in Sources */,
+				2F8CB30C1CB5020D008C2435 /* Popup.cpp in Sources */,
 				2F8509741CB4A42900813AFC /* generated_message_reflection.cc in Sources */,
 				2F8509C71CB4BBCD00813AFC /* MSprite.cpp in Sources */,
 				2F8509661CB4A42900813AFC /* descriptor.cc in Sources */,
+				2F8CB3041CB4F7A6008C2435 /* TLMienNam.cpp in Sources */,
 				2F8509761CB4A42900813AFC /* generated_message_util.cc in Sources */,
 				2F8509C11CB4BBCD00813AFC /* MButton.cpp in Sources */,
 				2F85099E1CB4A42900813AFC /* substitute.cc in Sources */,
@@ -1699,9 +1738,11 @@
 				2F8509821CB4A42900813AFC /* zero_copy_stream_impl.cc in Sources */,
 				2F85099A1CB4A42900813AFC /* structurally_valid.cc in Sources */,
 				2F8509AC1CB4A43500813AFC /* login.pb.cc in Sources */,
+				2F8CB3081CB4F82A008C2435 /* CardSprite.cpp in Sources */,
 				2F8509721CB4A42900813AFC /* extension_set_heavy.cc in Sources */,
 				2F85096C1CB4A42900813AFC /* descriptor_database.cc in Sources */,
 				2F8509961CB4A42900813AFC /* once.cc in Sources */,
+				2F850B6F1CB4EA4500813AFC /* ShowGame.cpp in Sources */,
 				2F8509981CB4A42900813AFC /* stringprintf.cc in Sources */,
 				2F8509801CB4A42900813AFC /* zero_copy_stream.cc in Sources */,
 				2F8509781CB4A42900813AFC /* coded_stream.cc in Sources */,
@@ -1709,6 +1750,7 @@
 				2F8509921CB4A42900813AFC /* atomicops_internals_x86_msvc.cc in Sources */,
 				2F8509A01CB4A42900813AFC /* text_format.cc in Sources */,
 				2F8509D11CB4BD9900813AFC /* LoginScene.cpp in Sources */,
+				2F8CB3101CB5052B008C2435 /* PopupSetting.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1734,6 +1776,7 @@
 				2F8509C41CB4BBCD00813AFC /* MEditBox.cpp in Sources */,
 				2F8509CE1CB4BBD600813AFC /* IntroScene.cpp in Sources */,
 				2F8509871CB4A42900813AFC /* message.cc in Sources */,
+				2F850B701CB4EA4500813AFC /* ShowGame.cpp in Sources */,
 				2F8509791CB4A42900813AFC /* coded_stream.cc in Sources */,
 				2F8509671CB4A42900813AFC /* descriptor.cc in Sources */,
 				2F85098F1CB4A42900813AFC /* service.cc in Sources */,
@@ -1743,10 +1786,13 @@
 				2F8509911CB4A42900813AFC /* atomicops_internals_x86_gcc.cc in Sources */,
 				2F8509991CB4A42900813AFC /* stringprintf.cc in Sources */,
 				2F85097F1CB4A42900813AFC /* tokenizer.cc in Sources */,
+				2F8CB3091CB4FBE2008C2435 /* CardSprite.cpp in Sources */,
 				2F8509D21CB4BD9900813AFC /* LoginScene.cpp in Sources */,
+				2F8CB30D1CB5020D008C2435 /* Popup.cpp in Sources */,
 				2F8509C81CB4BBCD00813AFC /* MSprite.cpp in Sources */,
 				2F8509C21CB4BBCD00813AFC /* MButton.cpp in Sources */,
 				2F8509691CB4A42900813AFC /* descriptor.pb.cc in Sources */,
+				2F8CB3111CB5052B008C2435 /* PopupSetting.cpp in Sources */,
 				2F8509DD1CB4C7B000813AFC /* DefaultSocket.cpp in Sources */,
 				2F8509AD1CB4A43500813AFC /* login.pb.cc in Sources */,
 				2F8509831CB4A42900813AFC /* zero_copy_stream_impl.cc in Sources */,
@@ -1941,6 +1987,10 @@
 					"$(SRCROOT)/../cocos2d/external",
 					"$(SRCROOT)/../cocos2d/external/chipmunk/include/chipmunk",
 					"$(SRCROOT)/../Classes",
+					"$(SRCROOT)/../Classes/CustomUI",
+					"$(SRCROOT)/../Classes/GameScene",
+					"$(SRCROOT)/../Classes/MenuScene",
+					"$(SRCROOT)/../Classes/Config",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -1973,6 +2023,10 @@
 					"$(SRCROOT)/../cocos2d/external",
 					"$(SRCROOT)/../cocos2d/external/chipmunk/include/chipmunk",
 					"$(SRCROOT)/../Classes",
+					"$(SRCROOT)/../Classes/CustomUI",
+					"$(SRCROOT)/../Classes/GameScene",
+					"$(SRCROOT)/../Classes/MenuScene",
+					"$(SRCROOT)/../Classes/Config",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;

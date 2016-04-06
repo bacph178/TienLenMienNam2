@@ -38,6 +38,14 @@ enum PlayerState{
     Pre
 };
 
+enum CardType {
+    Hearts = 0,
+    Diamonds,
+    Clubs,
+    Spade,
+    OTHER
+};
+
 #define PROMOTE_GAME_URL "market://search?q=pub:XXX"
 
 #define GAME_STATUS_PLAYING 1

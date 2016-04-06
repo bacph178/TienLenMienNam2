@@ -62,6 +62,8 @@ MButton* MButton::createExtends(std::string textureName,std::string text,float s
     btn->setTitleText(text);
     btn->setTitleFontSize(size);
     btn->setTitleFontName("fonts/gamevina.otf");
+    btn->getTitleRenderer()->setAnchorPoint(Vec2(0,0));
+    btn->getTitleRenderer()->setPosition(btn->getContentSize().width+5,0);
     
     return btn;
     

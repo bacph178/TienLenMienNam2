@@ -1,10 +1,12 @@
 #include "RegisterScene.h"
-#include <CustomUI/MSprite.hpp>
-#include <CustomUI/MLabel.hpp>
-#include <CustomUI/MButton.hpp>
-#include <CustomUI/MEditBox.hpp>
+#include "LoginScene.h"
 
-#include <Config/GameConfig.h>
+#include "CustomUI/MSprite.hpp"
+#include "CustomUI/MLabel.hpp"
+#include "CustomUI/MButton.hpp"
+#include "CustomUI/MEditBox.hpp"
+
+#include "Config/GameConfig.h"
 
 #define TAG_BTN_REGISTER 1
 #define TAG_BTN_BACK 2

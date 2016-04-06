@@ -1,13 +1,15 @@
 #include "LoginScene.h"
+#include "RegisterScene.h"
+#include "ShowGame.h"
 
-#include <CustomUI/MButton.hpp>
-#include <CustomUI/MLabel.hpp>
-#include <CustomUI/MSprite.hpp>
-#include <CustomUI/MEditBox.hpp>
-#include <CustomUI/MLabel.hpp>
-#include <CustomUI/MText.hpp>
+#include "CustomUI/MButton.hpp"
+#include "CustomUI/MLabel.hpp"
+#include "CustomUI/MSprite.hpp"
+#include "CustomUI/MEditBox.hpp"
+#include "CustomUI/MLabel.hpp"
+#include "CustomUI/MText.hpp"
 
-#include <Config/GameConfig.h>
+#include "Config/GameConfig.h"
 
 #include <protobufObject/login.pb.h>
 #include <thread>
@@ -70,10 +72,8 @@ bool LoginScene::init()
         return false;
     }
     
-    BINLoginRequest *loginRequest = new BINLoginRequest();
-    
-    
-    
+    //BINLoginRequest *loginRequest = new BINLoginRequest();
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     float w = visibleSize.width;
@@ -202,12 +202,445 @@ bool LoginScene::init()
 }
 
 
+bool loginSuccess = false;
+
+
 void LoginScene::update(float delta){
     auto position = sprite->getPosition();
     position.x -= 250 * delta;
     if (position.x  < 0 - (sprite->getBoundingBox().size.width / 2))
         position.x = this->getBoundingBox().getMaxX() + sprite->getBoundingBox().size.width/2;
     sprite->setPosition(position);
+    
+    if(loginSuccess){
+        auto showgame = RegisterScene::createScene();
+        Director::getInstance()->replaceScene(TransitionCrossFade::create(0.1f,showgame));
+        loginSuccess = false;
+    }
+}
+
+
+void callNetwork(char *ackBuf, int size) {
+    DefaultSocket *defaultSocket = new DefaultSocket();
+    bool isConnected = defaultSocket->connectSocket("192.168.1.50", 1240);
+    //	CCLOG("already connected: %s", isConnected ? "true" : "false");
+    // CCLOG("Send data: %s", loginRequest->SerializeAsString());
+    defaultSocket->sendData(ackBuf, size);
+    std::vector<char> bufferRead(500);
+    defaultSocket->readData(bufferRead, 500);
+    LoginScene::readFrom(bufferRead, 500);
+    // defaultSocket->readData(bufferRead, 500);
+    defaultSocket->closeSocket();
+}
+
+void testProtoLogin() {
+    
+    
+    //23 bytes protobuf
+    BINLoginRequest* loginRequest = new BINLoginRequest();
+    loginRequest->set_username("sanglx");
+    loginRequest->set_password("12345678");
+    loginRequest->set_cp("0");
+    loginRequest->set_appversion("1");
+    loginRequest->set_clienttype(1);
+    
+    CCLOG("byte size: %d" , loginRequest->ByteSize());
+    
+    string myString = "hello";
+    
+    std::vector<char> bytes(myString.begin(), myString.end());
+    bytes.push_back('\0');
+    
+    //N byte session
+    char *session = &bytes[0];
+    //2 byte lenSession
+    int lenSession = strlen(session);
+    int size = loginRequest->ByteSize() + 11 + lenSession;
+    char* ackBuf = new char[size];
+    // ArrayOutputStream os(ackBuf, size);
+    google::protobuf::io::ArrayOutputStream arrayOut(ackBuf,size);
+    google::protobuf::io::CodedOutputStream codedOut(&arrayOut);
+    
+    char* buf = new char[1];
+    buf[0] = 2;
+    codedOut.WriteRaw(buf, 1); //write os
+    char* dataSize = new char[4];
+    
+    int data_size = loginRequest->ByteSize() + 4;
+    dataSize[0] = (data_size >> 24) & 0xFF;
+    dataSize[1] = (data_size >> 16) & 0xFF;
+    dataSize[2] = (data_size >> 8) & 0xFF;
+    dataSize[3] = (data_size >> 0) & 0xFF;
+    codedOut.WriteRaw(dataSize, 4); //write data size
+    char* char_len_session = new char[2];
+    char_len_session[0] = (lenSession >> 8) & 0xFF;
+    char_len_session[1] = (lenSession >> 0) & 0xFF;
+    
+    // std::string str_len_session = string(char_len_session);
+    
+    //2 byte length session
+    codedOut.WriteRaw(char_len_session, 2);
+    
+    //n byte session
+    codedOut.WriteRaw(session, lenSession);
+    // loginRequest->SerializeToCodedStream(&codedOut);
+    
+    char* mid = new char[2];
+    mid[0] = (1001 >> 8) & 0xFF;
+    mid[1] = (1001 >> 0) & 0xFF;
+    
+    codedOut.WriteRaw(mid, 2);
+    
+    
+    loginRequest->SerializeToCodedStream(&codedOut);
+    
+    string buffers = string(ackBuf);
+    // string buffers = string((char*) ackBuf, codedOut.ByteCount());
+    /*Base64 b64;
+     std::string encoded = b64.base64_encode(reinterpret_cast<const unsigned char*>(ackBuf), strlen(ackBuf));*/
+    
+    // CCLOG("%s", bufff.c_str());
+    
+    //end of file
+    char *eot = new char[2];
+    eot[0] = '\r';
+    eot[1] = '\n';
+    
+    codedOut.WriteRaw(eot, 2);
+    thread *t = new thread(callNetwork, ackBuf, size);
+    if(t->joinable())
+        t->detach();
+    // delete(ackBuf);
+}
+
+struct membuf : std::streambuf
+{
+    membuf(char* begin, char* end) {
+        this->setg(begin, begin, end);
+    }
+};
+
+
+
+void LoginScene::readFrom(std::vector<char> read_str, int len) {
+    char* chars_from_read = &read_str[0];
+    google::protobuf::io::ArrayInputStream arrayIn(chars_from_read, len);
+    google::protobuf::io::CodedInputStream codedIn(&arrayIn);
+    //read data size
+    char *data_size_chars = new char[4];
+    codedIn.ReadRaw(data_size_chars, 4);
+    
+    int bytes_size = ((data_size_chars[0] & 0xFF) << 24) + ((data_size_chars[1] & 0xFF) << 16) + ((data_size_chars[2] & 0xFF) << 8) + ((data_size_chars[3] & 0xFF) << 0);
+    
+    //read compress
+    char *is_compress_chars = new char[1];
+    codedIn.ReadRaw(is_compress_chars, 1);
+    
+    int is_compress = is_compress_chars[0];
+    
+    int left_byte_size = bytes_size - 1;
+    
+    string message;
+    
+    /*if is_compress = 1 */
+    if (is_compress == 1) {
+        google::protobuf::io::CodedInputStream::Limit msgLimit = codedIn.PushLimit(left_byte_size); //limit compressed size
+        //read data compressed
+        char *data_compressed = new char[left_byte_size];
+        // test data
+        // char test_data[] = {31,-117, 8, 0, 0, 0, 0, 0, 0, 0, 99, -32, 102, 126, -55, -63, 40, -60, -102, -101, 24, -97, -101, 8, 0, -41, 18, 51, -108, 13, 0, 0, 0};
+        
+        codedIn.ReadRaw(data_compressed, left_byte_size);
+        codedIn.PopLimit(msgLimit);
+        vector<char> result = LoginScene::decompress_gzip2(data_compressed, (uLong)left_byte_size);//decompress_gzip2(data_compressed, (uLong)left_byte_size);
+        char* data_uncompressed = reinterpret_cast<char*>(result.data());
+        
+        int length = result.size();
+        int index = 0;
+        bool debug = false;
+        while (index < length) {
+            google::protobuf::Message *loginResponse;
+            //read datablocksize
+            int data_size_block = ((data_uncompressed[index] & 0xFF) << 8) + ((data_uncompressed[index + 1] & 0xFF) << 0);
+            //read messageid
+            int messageid = ((data_uncompressed[index + 2] & 0xFF) << 8) + ((data_uncompressed[index + 3] & 0xFF) << 0);
+            loginResponse->ParseFromArray(&data_uncompressed[index + 4], data_size_block - 2);
+            index += (data_size_block + 2);
+            
+            if (debug) break;
+        }
+    }
+    else {
+        
+        /* if is_compression = 0 */
+        while (left_byte_size > 0) {
+            
+            
+            //read protobuf + data_size_block + mid
+            
+            //read datasizeblock
+            char *data_size_block_chars = new char[2];
+            
+            codedIn.ReadRaw(data_size_block_chars, 2);
+            
+            int data_size_block = ((data_size_block_chars[0] & 0xFF) << 8) + ((data_size_block_chars[1] & 0xFF) << 0);
+            
+            // read messageid
+            
+            char *mid_chars = new char[2];
+            
+            codedIn.ReadRaw(mid_chars, 2);
+            
+            int messageid = ((mid_chars[0] & 0xFF) << 8) + ((mid_chars[1] & 0xFF) << 0);
+            
+            google::protobuf::io::CodedInputStream::Limit msgLimit = codedIn.PushLimit(data_size_block - 2);
+            
+            BINLoginResponse loginResponse;
+            loginResponse.ParseFromCodedStream(&codedIn);
+            
+            //setLogin(loginResponse.responsecode());
+            loginSuccess = loginResponse.responsecode();
+            message = loginResponse.message();
+            
+            codedIn.PopLimit(msgLimit);
+            left_byte_size -= (data_size_block + 2);
+        }
+    }
+    
+    if(loginSuccess) {
+        //TODO: change scene
+        
+        
+    } else {
+        cocos2d::MessageBox(message.c_str(), "failed");
+    }
+}
+
+//======================
+
+std::string compress_gzip(const std::string& str,
+                          int compressionlevel = Z_BEST_COMPRESSION)
+{
+    z_stream zs;                        // z_stream is zlib's control structure
+    memset(&zs, 0, sizeof(zs));
+    
+    if (deflateInit2(&zs,
+                     compressionlevel,
+                     Z_DEFLATED,
+                     MOD_GZIP_ZLIB_WINDOWSIZE + 16,
+                     MOD_GZIP_ZLIB_CFACTOR,
+                     Z_DEFAULT_STRATEGY) != Z_OK
+        ) {
+        throw(std::runtime_error("deflateInit2 failed while compressing."));
+    }
+    
+    zs.next_in = (Bytef*)str.data();
+    zs.avail_in = str.size();           // set the z_stream's input
+    
+    int ret;
+    char outbuffer[32768];
+    std::string outstring;
+    
+    // retrieve the compressed bytes blockwise
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+        
+        ret = deflate(&zs, Z_FINISH);
+        
+        if (outstring.size() < zs.total_out) {
+            // append the block to the output string
+            outstring.append(outbuffer,
+                             zs.total_out - outstring.size());
+        }
+    } while (ret == Z_OK);
+    
+    deflateEnd(&zs);
+    
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        std::ostringstream oss;
+        oss << "Exception during zlib compression: (" << ret << ") " << zs.msg;
+        throw(std::runtime_error(oss.str()));
+    }
+    
+    return outstring;
+}
+
+// Found this one here: http://panthema.net/2007/0328-ZLibString.html, author is Timo Bingmann
+/** Compress a STL string using zlib with given compression level and return
+ * the binary data. */
+std::string compress_deflate(const std::string& str,
+                             int compressionlevel = Z_BEST_COMPRESSION)
+{
+    z_stream zs;                        // z_stream is zlib's control structure
+    memset(&zs, 0, sizeof(zs));
+    
+    if (deflateInit(&zs, compressionlevel) != Z_OK)
+        throw(std::runtime_error("deflateInit failed while compressing."));
+    
+    zs.next_in = (Bytef*)str.data();
+    zs.avail_in = str.size();           // set the z_stream's input
+    
+    int ret;
+    char outbuffer[32768];
+    std::string outstring;
+    
+    // retrieve the compressed bytes blockwise
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+        
+        ret = deflate(&zs, Z_FINISH);
+        
+        if (outstring.size() < zs.total_out) {
+            // append the block to the output string
+            outstring.append(outbuffer,
+                             zs.total_out - outstring.size());
+        }
+    } while (ret == Z_OK);
+    
+    deflateEnd(&zs);
+    
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        std::ostringstream oss;
+        oss << "Exception during zlib compression: (" << ret << ") " << zs.msg;
+        throw(std::runtime_error(oss.str()));
+    }
+    
+    return outstring;
+}
+
+/** Decompress an STL string using zlib and return the original data. */
+std::string decompress_deflate(const std::string& str)
+{
+    z_stream zs;                        // z_stream is zlib's control structure
+    memset(&zs, 0, sizeof(zs));
+    
+    if (inflateInit(&zs) != Z_OK)
+        throw(std::runtime_error("inflateInit failed while decompressing."));
+    
+    zs.next_in = (Bytef*)str.data();
+    zs.avail_in = str.size();
+    
+    int ret;
+    char outbuffer[32768];
+    std::string outstring;
+    
+    // get the decompressed bytes blockwise using repeated calls to inflate
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+        
+        ret = inflate(&zs, 0);
+        
+        if (outstring.size() < zs.total_out) {
+            outstring.append(outbuffer,
+                             zs.total_out - outstring.size());
+        }
+        
+    } while (ret == Z_OK);
+    
+    inflateEnd(&zs);
+    
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        std::ostringstream oss;
+        oss << "Exception during zlib decompression: (" << ret << ") "
+        << zs.msg;
+        throw(std::runtime_error(oss.str()));
+    }
+    
+    return outstring;
+}
+vector<char> LoginScene::decompress_gzip2(const char* byte_arr, uLong length) {
+    
+    vector<char> result;
+    vector<char> nil_vector;
+    if (length == 0) return nil_vector;
+    bool done = false;
+    z_stream zs;
+    memset(&zs, 0, sizeof(zs));
+    
+    zs.next_in = (Bytef*) byte_arr;
+    zs.avail_in = length;
+    zs.total_out = 0;
+    zs.zalloc = Z_NULL;
+    zs.zfree = Z_NULL;
+    
+    if (inflateInit2(&zs, MOD_GZIP_ZLIB_WINDOWSIZE + 16) != Z_OK)  return nil_vector;
+    
+    int ret;
+    
+    char outbuffer[32768];
+    
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+        
+        ret = inflate(&zs, Z_SYNC_FLUSH);
+        
+        if (result.size() < zs.total_out) {
+            int size = result.size();
+            for (int i = 0; i < zs.total_out - size; i++)
+                result.push_back(outbuffer[i]);
+        }
+        
+    } while (ret == Z_OK);
+    
+    inflateEnd(&zs);
+    
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        std::ostringstream oss;
+        oss << "Exception during zlib decompression: (" << ret << ") "
+        << zs.msg;
+        return nil_vector;
+    }
+    return result;
+}
+
+std::string decompress_gzip(const std::string &str)
+{
+    z_stream zs;                        // z_stream is zlib's control structure
+    memset(&zs, 0, sizeof(zs));
+    
+    if (inflateInit2(&zs, MOD_GZIP_ZLIB_WINDOWSIZE + 16) != Z_OK)
+        throw(std::runtime_error("inflateInit failed while decompressing."));
+    
+    
+    zs.next_in = (Bytef*)str.data();
+    zs.avail_in = str.size();
+    
+    
+    int ret;
+    char outbuffer[32768];
+    std::string outstring;
+    
+    
+    
+    // get the decompressed bytes blockwise using repeated calls to inflate
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+        
+        ret = inflate(&zs, 0);
+        
+        
+        if (outstring.size() < zs.total_out) {
+            outstring.append(outbuffer,
+                             zs.total_out - outstring.size());
+        }
+        
+    } while (ret == Z_OK);
+    
+    inflateEnd(&zs);
+    
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        std::ostringstream oss;
+        oss << "Exception during zlib decompression: (" << ret << ") "
+        << zs.msg;
+        throw(std::runtime_error(oss.str()));
+    }
+    
+    return outstring;
 }
 
 
@@ -231,21 +664,19 @@ void LoginScene::menuCallBack(Ref *pSender, Widget::TouchEventType eventType){
                 break;
             case TAG_BTN_PLAYNOW:
                 {
-                    //auto select = ShowGame::createScene();
-                   // Director::getInstance()->replaceScene(TransitionCrossFade::create(0.15f, select));
+                    auto select = ShowGame::createScene();
+                   Director::getInstance()->replaceScene(TransitionCrossFade::create(0.15f, select));
                 }
                 break;
             case TAG_BTN_FOGOTPASSWORD:
                 CCLOG("%s","Forgot_Password!");
                 break;
             default:
-                
                 break;
         }
     }
 
 }
-
 
 #pragma mark - EditBoxDelegate
 

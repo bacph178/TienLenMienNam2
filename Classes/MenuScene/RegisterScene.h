@@ -4,7 +4,6 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
-#include <MenuScene/LoginScene.h>
 
 USING_NS_CC;
 using namespace cocos2d::ui;
