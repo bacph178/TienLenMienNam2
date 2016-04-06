@@ -1,0 +1,33 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//Login 
+
+message BINLoginRequest {
+	required string userName = 1;
+	required string password = 2;
+    required string appVersion = 3;
+	required string cp = 4;
+	required int32 clientType = 5;
+	optional string deviceInfo = 6;
+	optional string country = 7;
+	optional string language = 8;
+	optional int32 compress = 9;
+}
+
+message BINLoginResponse {
+    required bool responseCode = 1;
+    optional string message = 2; 
+    optional int64 userId = 3;
+    optional string userName = 4;
+    optional int64 cash = 5;
+	optional int64 gold = 6;
+    optional int32 avatarId = 7;
+	optional string avatarPath = 8;
+	optional int32 level = 9;
+	optional int64 exp = 10;
+	optional string sessionId = 11;
+	optional bool forceUpdate = 12;
+	optional bool enableDebugLag = 13;
+}
+
+//End Login 
