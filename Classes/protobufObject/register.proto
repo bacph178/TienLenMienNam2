@@ -1,0 +1,19 @@
+option java_package = "com.mi.game.network.data.bin";
+
+message BINRegisterRequest {
+	required string userName = 1;
+	required string password = 2;
+	optional string fullName = 3;
+	required string cp = 4;
+	required int32 clientType = 6;
+	required string deviceId = 7;
+	optional string deviceInfo = 8;
+	optional string ipAddress = 9;
+	optional string appVersion = 10;
+}
+
+message BINRegisterResponse {
+    required bool responseCode = 1;
+	optional string message = 2;
+}
+

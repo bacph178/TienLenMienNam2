@@ -1,0 +1,36 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//Initialize 
+
+message BINInitializeRequest {
+	optional string cp = 1;
+	optional string appVersion = 2;
+	optional string deviceId = 3;
+	optional string deviceInfo = 4;
+	optional string ipAddress = 5;
+	optional string country = 6;
+	optional string language = 7;
+}
+
+message BINLevel {
+	required int32 level = 1;
+	required string name = 2;
+	optional int64 cashGift = 3;
+	optional int64 goldGift = 4;
+	required int64 exp = 5;
+}
+
+message BINInitializeResponse {
+    required bool responseCode = 1;
+    optional string message = 2; 
+	required string currentAppVersion = 3;
+	repeated BINLevel levelDirectory = 4;
+	optional string downloadUrl = 5;
+	optional string cashCurrency = 6; 
+	optional string goldCurrency = 7;
+	required bool forceUpdate = 8;
+	required bool enableQuickPlay = 9;
+	required bool enableCashSystem = 10;
+}
+
+//End Initialize 

@@ -5,13 +5,6 @@ option java_package = "com.mi.game.network.data.bin";
 message BINLoginRequest {
 	required string userName = 1;
 	required string password = 2;
-    required string appVersion = 3;
-	required string cp = 4;
-	required int32 clientType = 5;
-	optional string deviceInfo = 6;
-	optional string country = 7;
-	optional string language = 8;
-	optional int32 compress = 9;
 }
 
 message BINLoginResponse {

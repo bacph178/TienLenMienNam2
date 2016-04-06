@@ -35,16 +35,9 @@ void protobuf_AssignDesc_login_2eproto() {
       "login.proto");
   GOOGLE_CHECK(file != NULL);
   BINLoginRequest_descriptor_ = file->message_type(0);
-  static const int BINLoginRequest_offsets_[9] = {
+  static const int BINLoginRequest_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, username_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, password_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, appversion_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, cp_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, clienttype_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, deviceinfo_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, country_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, language_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BINLoginRequest, compress_),
   };
   BINLoginRequest_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -118,18 +111,15 @@ void protobuf_AddDesc_login_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\013login.proto\"\262\001\n\017BINLoginRequest\022\020\n\010use"
-    "rName\030\001 \002(\t\022\020\n\010password\030\002 \002(\t\022\022\n\nappVers"
-    "ion\030\003 \002(\t\022\n\n\002cp\030\004 \002(\t\022\022\n\nclientType\030\005 \002("
-    "\005\022\022\n\ndeviceInfo\030\006 \001(\t\022\017\n\007country\030\007 \001(\t\022\020"
-    "\n\010language\030\010 \001(\t\022\020\n\010compress\030\t \001(\005\"\371\001\n\020B"
-    "INLoginResponse\022\024\n\014responseCode\030\001 \002(\010\022\017\n"
-    "\007message\030\002 \001(\t\022\016\n\006userId\030\003 \001(\003\022\020\n\010userNa"
-    "me\030\004 \001(\t\022\014\n\004cash\030\005 \001(\003\022\014\n\004gold\030\006 \001(\003\022\020\n\010"
-    "avatarId\030\007 \001(\005\022\022\n\navatarPath\030\010 \001(\t\022\r\n\005le"
-    "vel\030\t \001(\005\022\013\n\003exp\030\n \001(\003\022\021\n\tsessionId\030\013 \001("
-    "\t\022\023\n\013forceUpdate\030\014 \001(\010\022\026\n\016enableDebugLag"
-    "\030\r \001(\010B\036\n\034com.mi.game.network.data.bin", 478);
+    "\n\013login.proto\"5\n\017BINLoginRequest\022\020\n\010user"
+    "Name\030\001 \002(\t\022\020\n\010password\030\002 \002(\t\"\371\001\n\020BINLogi"
+    "nResponse\022\024\n\014responseCode\030\001 \002(\010\022\017\n\007messa"
+    "ge\030\002 \001(\t\022\016\n\006userId\030\003 \001(\003\022\020\n\010userName\030\004 \001"
+    "(\t\022\014\n\004cash\030\005 \001(\003\022\014\n\004gold\030\006 \001(\003\022\020\n\010avatar"
+    "Id\030\007 \001(\005\022\022\n\navatarPath\030\010 \001(\t\022\r\n\005level\030\t "
+    "\001(\005\022\013\n\003exp\030\n \001(\003\022\021\n\tsessionId\030\013 \001(\t\022\023\n\013f"
+    "orceUpdate\030\014 \001(\010\022\026\n\016enableDebugLag\030\r \001(\010"
+    "B\036\n\034com.mi.game.network.data.bin", 352);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "login.proto", &protobuf_RegisterTypes);
   BINLoginRequest::default_instance_ = new BINLoginRequest();
@@ -151,13 +141,6 @@ struct StaticDescriptorInitializer_login_2eproto {
 #ifndef _MSC_VER
 const int BINLoginRequest::kUserNameFieldNumber;
 const int BINLoginRequest::kPasswordFieldNumber;
-const int BINLoginRequest::kAppVersionFieldNumber;
-const int BINLoginRequest::kCpFieldNumber;
-const int BINLoginRequest::kClientTypeFieldNumber;
-const int BINLoginRequest::kDeviceInfoFieldNumber;
-const int BINLoginRequest::kCountryFieldNumber;
-const int BINLoginRequest::kLanguageFieldNumber;
-const int BINLoginRequest::kCompressFieldNumber;
 #endif  // !_MSC_VER
 
 BINLoginRequest::BINLoginRequest()
@@ -178,13 +161,6 @@ void BINLoginRequest::SharedCtor() {
   _cached_size_ = 0;
   username_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   password_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  appversion_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  cp_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  clienttype_ = 0;
-  deviceinfo_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  country_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  language_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  compress_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -198,21 +174,6 @@ void BINLoginRequest::SharedDtor() {
   }
   if (password_ != &::google::protobuf::internal::kEmptyString) {
     delete password_;
-  }
-  if (appversion_ != &::google::protobuf::internal::kEmptyString) {
-    delete appversion_;
-  }
-  if (cp_ != &::google::protobuf::internal::kEmptyString) {
-    delete cp_;
-  }
-  if (deviceinfo_ != &::google::protobuf::internal::kEmptyString) {
-    delete deviceinfo_;
-  }
-  if (country_ != &::google::protobuf::internal::kEmptyString) {
-    delete country_;
-  }
-  if (language_ != &::google::protobuf::internal::kEmptyString) {
-    delete language_;
   }
   if (this != default_instance_) {
   }
@@ -251,35 +212,6 @@ void BINLoginRequest::Clear() {
         password_->clear();
       }
     }
-    if (has_appversion()) {
-      if (appversion_ != &::google::protobuf::internal::kEmptyString) {
-        appversion_->clear();
-      }
-    }
-    if (has_cp()) {
-      if (cp_ != &::google::protobuf::internal::kEmptyString) {
-        cp_->clear();
-      }
-    }
-    clienttype_ = 0;
-    if (has_deviceinfo()) {
-      if (deviceinfo_ != &::google::protobuf::internal::kEmptyString) {
-        deviceinfo_->clear();
-      }
-    }
-    if (has_country()) {
-      if (country_ != &::google::protobuf::internal::kEmptyString) {
-        country_->clear();
-      }
-    }
-    if (has_language()) {
-      if (language_ != &::google::protobuf::internal::kEmptyString) {
-        language_->clear();
-      }
-    }
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    compress_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -317,123 +249,6 @@ bool BINLoginRequest::MergePartialFromCodedStream(
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
             this->password().data(), this->password().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(26)) goto parse_appVersion;
-        break;
-      }
-
-      // required string appVersion = 3;
-      case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_appVersion:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_appversion()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->appversion().data(), this->appversion().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(34)) goto parse_cp;
-        break;
-      }
-
-      // required string cp = 4;
-      case 4: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_cp:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_cp()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->cp().data(), this->cp().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(40)) goto parse_clientType;
-        break;
-      }
-
-      // required int32 clientType = 5;
-      case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_clientType:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &clienttype_)));
-          set_has_clienttype();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(50)) goto parse_deviceInfo;
-        break;
-      }
-
-      // optional string deviceInfo = 6;
-      case 6: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_deviceInfo:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_deviceinfo()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->deviceinfo().data(), this->deviceinfo().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(58)) goto parse_country;
-        break;
-      }
-
-      // optional string country = 7;
-      case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_country:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_country()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->country().data(), this->country().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(66)) goto parse_language;
-        break;
-      }
-
-      // optional string language = 8;
-      case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_language:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_language()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->language().data(), this->language().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(72)) goto parse_compress;
-        break;
-      }
-
-      // optional int32 compress = 9;
-      case 9: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_compress:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &compress_)));
-          set_has_compress();
         } else {
           goto handle_uninterpreted;
         }
@@ -477,61 +292,6 @@ void BINLoginRequest::SerializeWithCachedSizes(
       2, this->password(), output);
   }
 
-  // required string appVersion = 3;
-  if (has_appversion()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->appversion().data(), this->appversion().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->appversion(), output);
-  }
-
-  // required string cp = 4;
-  if (has_cp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->cp().data(), this->cp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->cp(), output);
-  }
-
-  // required int32 clientType = 5;
-  if (has_clienttype()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->clienttype(), output);
-  }
-
-  // optional string deviceInfo = 6;
-  if (has_deviceinfo()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->deviceinfo().data(), this->deviceinfo().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      6, this->deviceinfo(), output);
-  }
-
-  // optional string country = 7;
-  if (has_country()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->country().data(), this->country().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      7, this->country(), output);
-  }
-
-  // optional string language = 8;
-  if (has_language()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->language().data(), this->language().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      8, this->language(), output);
-  }
-
-  // optional int32 compress = 9;
-  if (has_compress()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->compress(), output);
-  }
-
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -560,66 +320,6 @@ void BINLoginRequest::SerializeWithCachedSizes(
         2, this->password(), target);
   }
 
-  // required string appVersion = 3;
-  if (has_appversion()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->appversion().data(), this->appversion().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->appversion(), target);
-  }
-
-  // required string cp = 4;
-  if (has_cp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->cp().data(), this->cp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->cp(), target);
-  }
-
-  // required int32 clientType = 5;
-  if (has_clienttype()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->clienttype(), target);
-  }
-
-  // optional string deviceInfo = 6;
-  if (has_deviceinfo()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->deviceinfo().data(), this->deviceinfo().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->deviceinfo(), target);
-  }
-
-  // optional string country = 7;
-  if (has_country()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->country().data(), this->country().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->country(), target);
-  }
-
-  // optional string language = 8;
-  if (has_language()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->language().data(), this->language().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->language(), target);
-  }
-
-  // optional int32 compress = 9;
-  if (has_compress()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->compress(), target);
-  }
-
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -643,57 +343,6 @@ int BINLoginRequest::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->password());
-    }
-
-    // required string appVersion = 3;
-    if (has_appversion()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->appversion());
-    }
-
-    // required string cp = 4;
-    if (has_cp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->cp());
-    }
-
-    // required int32 clientType = 5;
-    if (has_clienttype()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->clienttype());
-    }
-
-    // optional string deviceInfo = 6;
-    if (has_deviceinfo()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->deviceinfo());
-    }
-
-    // optional string country = 7;
-    if (has_country()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->country());
-    }
-
-    // optional string language = 8;
-    if (has_language()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->language());
-    }
-
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional int32 compress = 9;
-    if (has_compress()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->compress());
     }
 
   }
@@ -729,29 +378,6 @@ void BINLoginRequest::MergeFrom(const BINLoginRequest& from) {
     if (from.has_password()) {
       set_password(from.password());
     }
-    if (from.has_appversion()) {
-      set_appversion(from.appversion());
-    }
-    if (from.has_cp()) {
-      set_cp(from.cp());
-    }
-    if (from.has_clienttype()) {
-      set_clienttype(from.clienttype());
-    }
-    if (from.has_deviceinfo()) {
-      set_deviceinfo(from.deviceinfo());
-    }
-    if (from.has_country()) {
-      set_country(from.country());
-    }
-    if (from.has_language()) {
-      set_language(from.language());
-    }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_compress()) {
-      set_compress(from.compress());
-    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -769,7 +395,7 @@ void BINLoginRequest::CopyFrom(const BINLoginRequest& from) {
 }
 
 bool BINLoginRequest::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
   return true;
 }
@@ -778,13 +404,6 @@ void BINLoginRequest::Swap(BINLoginRequest* other) {
   if (other != this) {
     std::swap(username_, other->username_);
     std::swap(password_, other->password_);
-    std::swap(appversion_, other->appversion_);
-    std::swap(cp_, other->cp_);
-    std::swap(clienttype_, other->clienttype_);
-    std::swap(deviceinfo_, other->deviceinfo_);
-    std::swap(country_, other->country_);
-    std::swap(language_, other->language_);
-    std::swap(compress_, other->compress_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

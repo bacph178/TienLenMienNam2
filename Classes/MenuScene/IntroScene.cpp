@@ -1,6 +1,16 @@
-#include "IntroScene.h"
-#include "MLabel.hpp"
-#include "MSprite.hpp"
+#include "MenuScene/IntroScene.h"
+#include "CustomUI/MLabel.hpp"
+#include "CustomUI/MSprite.hpp"
+#include "Utils/NetworkManager.h"
+
+
+void testRegister()
+{
+	NetworkManager nm;
+	nm.getInitializeMessageToServer(); 
+	//while (!NetworkManager::isInitialized()); 
+	// nm.getRegisterMessageToServer();
+}
 
 Scene* IntroScene::createScene()
 {
@@ -13,9 +23,12 @@ Scene* IntroScene::createScene()
     // add layer as a child to scene
     scene->addChild(layer);
 
+	testRegister(); 
     // return the scene
     return scene;
 }
+
+
 
 // on "init" you need to initialize your instance
 bool IntroScene::init()
