@@ -1,6 +1,6 @@
 
 #include "AppDelegate.h"
-#include "IntroScene.h"
+#include <MenuScene/IntroScene.h>
 
 USING_NS_CC;
 

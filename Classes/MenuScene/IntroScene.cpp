@@ -1,6 +1,7 @@
 #include "IntroScene.h"
-#include "MLabel.hpp"
-#include "MSprite.hpp"
+#include <CustomUI/MLabel.hpp>
+#include <CustomUI/MSprite.hpp>
+#include <MenuScene/LoginScene.h>
 
 Scene* IntroScene::createScene()
 {
@@ -53,6 +54,6 @@ bool IntroScene::init()
 
 void IntroScene::gotoStartScene(float dt)
 {
-	//auto startscene = LoginScene::createScene();
-	//Director::getInstance()->replaceScene(TransitionCrossFade::create(0.25f, startscene));
+	auto startscene = LoginScene::createScene();
+	Director::getInstance()->replaceScene(TransitionCrossFade::create(0.25f, startscene));
 }
