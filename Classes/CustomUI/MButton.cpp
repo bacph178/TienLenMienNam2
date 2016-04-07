@@ -10,6 +10,15 @@
 
 USING_NS_CC;
 
+MButton* MButton::create(std::string textureName){
+    MButton *btn = MButton::create();
+    btn->loadTextureNormal(textureName);
+    btn->setZoomScale(0.02f);
+    btn->setAnchorPoint(cocos2d::Vec2(0,0));
+    
+    return btn;
+}
+
 MButton* MButton::create(std::string textureName,int tag){
     MButton *btn = MButton::create();
     btn->loadTextureNormal(textureName);

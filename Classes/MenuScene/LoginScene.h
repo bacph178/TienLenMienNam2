@@ -28,11 +28,6 @@ public:
     
     
     void update(float) override;
-    
-public:
-    
-    std::string user_id_str;
-    std::string password_str;
 
 private:
     

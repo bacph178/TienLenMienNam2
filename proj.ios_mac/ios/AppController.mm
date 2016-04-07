@@ -76,6 +76,11 @@ static AppDelegate s_sharedApplication;
         [window setRootViewController:_viewController];
     }
 
+    NSString *deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    std::string ids = std::string([deviceId UTF8String]);
+    
+    CCLOG("id iphone : %s",ids.c_str());
+
     [window makeKeyAndVisible];
 
     [[UIApplication sharedApplication] setStatusBarHidden:true];

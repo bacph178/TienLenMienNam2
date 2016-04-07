@@ -381,6 +381,9 @@
 		2F8CB30D1CB5020D008C2435 /* Popup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB30A1CB5020D008C2435 /* Popup.cpp */; };
 		2F8CB3101CB5052B008C2435 /* PopupSetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */; };
 		2F8CB3111CB5052B008C2435 /* PopupSetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */; };
+		2F8CB3141CB51CA1008C2435 /* PopupMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB3121CB51CA1008C2435 /* PopupMenu.cpp */; };
+		2F8CB3151CB51CA1008C2435 /* PopupMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB3121CB51CA1008C2435 /* PopupMenu.cpp */; };
+		2FF218DE1CB5F40700260D7B /* TLMienNam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CB3021CB4F7A6008C2435 /* TLMienNam.cpp */; };
 		3EACC98F19EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		3EACC99019EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
@@ -721,6 +724,8 @@
 		2F8CB30B1CB5020D008C2435 /* Popup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Popup.hpp; sourceTree = "<group>"; };
 		2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PopupSetting.cpp; sourceTree = "<group>"; };
 		2F8CB30F1CB5052B008C2435 /* PopupSetting.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PopupSetting.hpp; sourceTree = "<group>"; };
+		2F8CB3121CB51CA1008C2435 /* PopupMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PopupMenu.cpp; sourceTree = "<group>"; };
+		2F8CB3131CB51CA1008C2435 /* PopupMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PopupMenu.hpp; sourceTree = "<group>"; };
 		3EACC98E19EE6D4300EB3C5E /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -908,6 +913,8 @@
 				2F8509CC1CB4BBD600813AFC /* IntroScene.h */,
 				2F8CB30E1CB5052B008C2435 /* PopupSetting.cpp */,
 				2F8CB30F1CB5052B008C2435 /* PopupSetting.hpp */,
+				2F8CB3121CB51CA1008C2435 /* PopupMenu.cpp */,
+				2F8CB3131CB51CA1008C2435 /* PopupMenu.hpp */,
 			);
 			path = MenuScene;
 			sourceTree = "<group>";
@@ -1715,6 +1722,7 @@
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				2F8509BF1CB4BBCD00813AFC /* M9Path.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				2F8CB3141CB51CA1008C2435 /* PopupMenu.cpp in Sources */,
 				2F8509C91CB4BBCD00813AFC /* MText.cpp in Sources */,
 				2F85097C1CB4A42900813AFC /* printer.cc in Sources */,
 				2F8509C51CB4BBCD00813AFC /* MLabel.cpp in Sources */,
@@ -1781,6 +1789,7 @@
 				2F8509671CB4A42900813AFC /* descriptor.cc in Sources */,
 				2F85098F1CB4A42900813AFC /* service.cc in Sources */,
 				2F85099B1CB4A42900813AFC /* structurally_valid.cc in Sources */,
+				2F8CB3151CB51CA1008C2435 /* PopupMenu.cpp in Sources */,
 				2F8509C01CB4BBCD00813AFC /* M9Path.cpp in Sources */,
 				2F85098B1CB4A42900813AFC /* reflection_ops.cc in Sources */,
 				2F8509911CB4A42900813AFC /* atomicops_internals_x86_gcc.cc in Sources */,
@@ -1790,6 +1799,7 @@
 				2F8509D21CB4BD9900813AFC /* LoginScene.cpp in Sources */,
 				2F8CB30D1CB5020D008C2435 /* Popup.cpp in Sources */,
 				2F8509C81CB4BBCD00813AFC /* MSprite.cpp in Sources */,
+				2FF218DE1CB5F40700260D7B /* TLMienNam.cpp in Sources */,
 				2F8509C21CB4BBCD00813AFC /* MButton.cpp in Sources */,
 				2F8509691CB4A42900813AFC /* descriptor.pb.cc in Sources */,
 				2F8CB3111CB5052B008C2435 /* PopupSetting.cpp in Sources */,

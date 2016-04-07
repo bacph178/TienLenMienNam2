@@ -252,7 +252,6 @@ void ShowGame::gameItemCallBack(cocos2d::Ref *sender, Widget::TouchEventType typ
         }
     }
     
-    
 }
 
 

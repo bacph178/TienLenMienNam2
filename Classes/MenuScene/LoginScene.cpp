@@ -233,13 +233,16 @@ void callNetwork(char *ackBuf, int size) {
     defaultSocket->closeSocket();
 }
 
+std::string user_id_str;
+std::string password_str;
+
 void testProtoLogin() {
     
     
     //23 bytes protobuf
     BINLoginRequest* loginRequest = new BINLoginRequest();
-    loginRequest->set_username("sanglx");
-    loginRequest->set_password("12345678");
+    loginRequest->set_username(user_id_str);
+    loginRequest->set_password(password_str);
     loginRequest->set_cp("0");
     loginRequest->set_appversion("1");
     loginRequest->set_clienttype(1);
@@ -696,12 +699,12 @@ void LoginScene::editBoxTextChanged(EditBox *editBox, const std::string& text) {
 void LoginScene::editBoxReturn(EditBox *editBox) {
     switch (editBox->getTag()) {
         case TAG_EDITBOX_MATKHAU:
-            this->password_str = editBox->getText();
-            CCLOG("%s",this->password_str.c_str());
+            password_str = editBox->getText();
+            CCLOG("%s",password_str.c_str());
             break;
         case TAG_EDITBOX_TAIKHOAN:
-            this->user_id_str = editBox->getText();
-            CCLOG("%s",this->user_id_str.c_str());
+            user_id_str = editBox->getText();
+            CCLOG("%s",user_id_str.c_str());
             break;
         default:
             break;

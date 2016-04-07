@@ -15,6 +15,7 @@ class MButton : public cocos2d::ui::Button {
     
 public:
     
+    static MButton* create(std::string textureNormal);
     static MButton* create(std::string textureNormal,int tag);
     static MButton* create(std::string textureNormal,std::string text,float size,int tag);
     static MButton* create(std::string textureNormal,std::string texturePressed,std::string text,float size,int tag);

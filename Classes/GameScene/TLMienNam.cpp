@@ -248,6 +248,7 @@ void TLMienNam::showInitCard(){
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    Vec2 center = Vec2(origin.x+visibleSize.width/2,origin.y+visibleSize.height/2);
     
     //createCard
     

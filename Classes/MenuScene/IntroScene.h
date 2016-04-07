@@ -16,6 +16,11 @@ public:
     
     // implement the "static create()" method manually
 	CREATE_FUNC(IntroScene);
+    
+public:
+    std::string getId();
+    
+    
 private:
 	void gotoStartScene(float dt);
 };
