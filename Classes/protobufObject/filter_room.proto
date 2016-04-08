@@ -1,0 +1,35 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//FilterRoom 
+
+message BINFilterRoomRequest {
+	required int32 zoneId = 1;
+	required bool vipRoom = 2;
+	required int32 firstResult = 3;
+	required int32 maxResult = 4;
+	optional int32 orderByField = 5;
+	optional bool asc = 6;
+}
+
+message BINRoomPlay {
+	required int32 roomIndex = 1;
+	required string roomName = 2;
+	required int64 roomId = 3;
+	required int32 roomGroupId = 4;
+	required int32 minBet = 5;
+	required int32 roomCapacity = 6;
+	required int32 enteringPlayer = 7;
+	required int32 level = 8;
+	required int32 tax = 9;
+	optional string ownerUserName = 10;
+	required bool vipRoom = 11;
+	required bool passwordRequired = 12;
+}
+
+message BINFilterRoomResponse {
+    required bool responseCode = 1;
+    optional string message = 2;
+	repeated BINRoomPlay roomPlays = 3;
+}
+
+//End FilterRoom 

@@ -1,0 +1,17 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//EnterRoom 
+
+message BINEnterRoomRequest {
+	required int32 roomIndex = 1;
+	required bool vipRoom = 2;
+	optional string password = 3;
+}
+
+message BINEnterRoomResponse {
+    required bool responseCode = 1;
+    optional string message = 2;
+	repeated BINPlayer currentPlayers = 3;
+}
+
+//End EnterRoom 

@@ -22,6 +22,9 @@
 #include "Utils/DefaultSocket.h"
 #include "protobufObject/register.pb.h"
 #include "protobufObject/initialize.pb.h"
+#include "protobufObject/login.pb.h"
+#include "protobufObject/ping.pb.h"
+
 
 #define MOD_GZIP_ZLIB_WINDOWSIZE 15
 #define MOD_GZIP_ZLIB_CFACTOR    9
@@ -29,8 +32,8 @@
 #define MAX_SIZE 1024 * 1024
 #define DEBUG 1
 
+USING_NS_CC; 
 using namespace std;
-
 
 vector<char> decompress_gzip2(const char* byte_arr, int length) {
 
@@ -83,10 +86,15 @@ void callNetwork(char* ackBuf, int size) {
 	DefaultSocket::getInstance()->sendData(ackBuf, size);
 	vector<char> bufferRead(4096);
 	DefaultSocket::getInstance()->readData(bufferRead, 4096);
-	NetworkManager::parseFrom(bufferRead, 4096);
+	vector<pair<google::protobuf::Message*, int>> listMessages = NetworkManager::parseFrom(bufferRead, 4096);
 	// DefaultSocket::getInstance()->closeSocket();
 }
 
+NetworkManager *NetworkManager::getInstance() {
+	if (!_instance)
+		_instance = new NetworkManager();
+	return _instance;
+}
 
 void NetworkManager::setInitialize(bool is_initialized) {
 	_initialized = is_initialized;
@@ -96,8 +104,26 @@ bool NetworkManager::isInitialized() {
 	return _initialized;
 }
 
-void NetworkManager::parseFrom(std::vector<char> read_str, int len)  
+google::protobuf::Message* getTypeMessage(google::protobuf::Message* msg, int messageid) {
+	switch (messageid) {
+	case NetworkManager::INITIALIZE:
+		msg = new BINInitializeResponse();
+		break;
+	case NetworkManager::REGISTER:
+		msg = new BINRegisterResponse();
+		break;
+	case NetworkManager::LOGIN:
+		msg = new BINLoginResponse(); 
+	default:
+		break;
+	}
+	return msg;
+}
+
+std::vector<std::pair<google::protobuf::Message*, int>> NetworkManager::parseFrom(
+	std::vector<char> read_str, int len)  
 {
+	vector<std::pair<google::protobuf::Message*, int>> listMessages;
 	char* chars_from_read = &read_str[0];
 	google::protobuf::io::ArrayInputStream arrayIn(chars_from_read, len);
 	google::protobuf::io::CodedInputStream codedIn(&arrayIn);
@@ -115,7 +141,7 @@ void NetworkManager::parseFrom(std::vector<char> read_str, int len)
 
 	int left_byte_size = bytes_size - 1;
 
-	google::protobuf::Message *response;
+	google::protobuf::Message *response = 0;
 
 	/*if is_compress = 1 */
 	if (is_compress == 1) {
@@ -140,14 +166,24 @@ void NetworkManager::parseFrom(std::vector<char> read_str, int len)
 			int messageid = ((data_uncompressed[index + 2] & 0xFF) << 8) + ((data_uncompressed[index + 3] & 0xFF) << 0);
 			//read protobuf message
 
-			if (messageid == 1000)
-				response = new BINRegisterResponse();
-			else
-				response = new BINInitializeResponse(); 
+			switch (messageid) {
+				case NetworkManager::INITIALIZE:
+					response = new BINInitializeResponse();
+					break;
+				case NetworkManager::REGISTER:
+					response = new BINRegisterResponse();
+					break;
+				default:
+					break;
+			}
+
 			response->ParseFromArray(&data_uncompressed[index + 4], data_size_block - 2);
 			index += (data_size_block + 2);
-
-			if (debug) break;
+			listMessages.push_back(std::make_pair(response, messageid));
+			if (messageid == NetworkManager::INITIALIZE) {
+				//initialize 
+				NetworkManager::setInitialize(true);
+			}
 		}
 	}
 	else {
@@ -171,25 +207,101 @@ void NetworkManager::parseFrom(std::vector<char> read_str, int len)
 
 			google::protobuf::io::CodedInputStream::Limit msgLimit = codedIn.PushLimit(data_size_block - 2);
 
-			if (messageid == 1000)
-				response = new BINRegisterResponse();
-			else
-				response = new BINInitializeResponse();
+			response = getTypeMessage(response, messageid);
+			
 			response->ParseFromCodedStream(&codedIn);
+			
 			// vectorMessage.push_back(response);
 			codedIn.PopLimit(msgLimit);
 			left_byte_size -= (data_size_block + 2);
-			if (messageid == 1111) {
+			if (messageid == NetworkManager::INITIALIZE) {
 				//initialize 
 				NetworkManager::setInitialize(true);
 			}
-			//cocos2d::MessageBox(((BINLoginResponse *)response)->responsecode() ? "true" : "false", "xxx");
+			listMessages.push_back(std::make_pair(response, messageid));
 		}
 	}
+	return listMessages; 
 }
 
+google::protobuf::Message* NetworkManager::initLoginMessage(string username, string password) {
+	auto request = new BINLoginRequest();
+	if (DEBUG) {
+		request->set_username("sanglx");
+		request->set_password("123456789");
+	}
+	else {
+	}
+	return request;
 
-char* NetworkManager::initInitializeMessage(int messid, int &len) {
+}
+
+char* NetworkManager::sendData(google::protobuf::Message* request, int os, int messid, 
+	std::string _session, int &len) 
+{
+	std::vector<char> bytes(_session.begin(), _session.end());
+	bytes.push_back('\0');
+	//N byte session
+	char *session = &bytes[0];
+	//2 byte lenSession
+	int lenSession = strlen(session);
+	int size = request->ByteSize() + 11 + lenSession;
+	char* ackBuf = new char[size];
+
+	google::protobuf::io::ArrayOutputStream arrayOut(ackBuf, size);
+	google::protobuf::io::CodedOutputStream codedOut(&arrayOut);
+
+	char* buf = new char[1];
+	buf[0] = os;
+	codedOut.WriteRaw(buf, 1); //write os
+	char* dataSize = new char[4];
+
+
+	//data size: protobuf + eot + messageid
+
+	int data_size = request->ByteSize() + 4;
+	dataSize[0] = (data_size >> 24) & 0xFF;
+	dataSize[1] = (data_size >> 16) & 0xFF;
+	dataSize[2] = (data_size >> 8) & 0xFF;
+	dataSize[3] = (data_size >> 0) & 0xFF;
+
+	//4 byte data size
+	codedOut.WriteRaw(dataSize, 4); 
+
+	//write data size
+	char* char_len_session = new char[2];
+	char_len_session[0] = (lenSession >> 8) & 0xFF;
+	char_len_session[1] = (lenSession >> 0) & 0xFF;
+	//2 byte length session
+	codedOut.WriteRaw(char_len_session, 2);
+
+	//n byte session
+	codedOut.WriteRaw(session, lenSession);
+	// loginRequest->SerializeToCodedStream(&codedOut);
+
+
+	//2 byte messid
+	char* mid = new char[2];
+	mid[0] = (messid >> 8) & 0xFF;
+	mid[1] = (messid >> 0) & 0xFF;
+
+	codedOut.WriteRaw(mid, 2);
+
+	//protobuf 
+	request->SerializeToCodedStream(&codedOut);
+	
+	char *eot = new char[2];
+	eot[0] = '\r';
+	eot[1] = '\n';
+
+	codedOut.WriteRaw(eot, 2);
+	len = size;
+	return ackBuf;
+
+}
+
+google::protobuf::Message* NetworkManager::initInitializeMessage(string cp, string appversion, 
+	string country, string language, string device_id, string device_info, string ipaddress) {
 	auto request = new BINInitializeRequest(); 
 	if (DEBUG) {
 		request->set_cp("0");
@@ -200,77 +312,13 @@ char* NetworkManager::initInitializeMessage(int messid, int &len) {
 		request->set_deviceinfo("Samsung galaxy S2");
 		request->set_ipaddress("192.168.1.47");
 	}
-
-	CCLOG("byte size: %d", request->ByteSize());
-
-	string myString = "";
-
-	std::vector<char> bytes(myString.begin(), myString.end());
-	bytes.push_back('\0');
-
-	//N byte session
-	char *session = &bytes[0];
-	//2 byte lenSession
-	int lenSession = strlen(session);
-	int size = request->ByteSize() + 11 + lenSession;
-	char* ackBuf = new char[size];
-	// ArrayOutputStream os(ackBuf, size);
-	google::protobuf::io::ArrayOutputStream arrayOut(ackBuf, size);
-	google::protobuf::io::CodedOutputStream codedOut(&arrayOut);
-
-	char* buf = new char[1];
-	buf[0] = 2;
-	codedOut.WriteRaw(buf, 1); //write os
-	char* dataSize = new char[4];
-
-	int data_size = request->ByteSize() + 4;
-	dataSize[0] = (data_size >> 24) & 0xFF;
-	dataSize[1] = (data_size >> 16) & 0xFF;
-	dataSize[2] = (data_size >> 8) & 0xFF;
-	dataSize[3] = (data_size >> 0) & 0xFF;
-	codedOut.WriteRaw(dataSize, 4); //write data size
-	char* char_len_session = new char[2];
-	char_len_session[0] = (lenSession >> 8) & 0xFF;
-	char_len_session[1] = (lenSession >> 0) & 0xFF;
-
-	// std::string str_len_session = string(char_len_session);
-
-	//2 byte length session
-	codedOut.WriteRaw(char_len_session, 2);
-
-	//n byte session
-	codedOut.WriteRaw(session, lenSession);
-	// loginRequest->SerializeToCodedStream(&codedOut);
-
-	char* mid = new char[2];
-
-	mid[0] = (messid >> 8) & 0xFF;
-	mid[1] = (messid >> 0) & 0xFF;
-
-	codedOut.WriteRaw(mid, 2);
-
-
-	request->SerializeToCodedStream(&codedOut);
-
-	string buffers = string(ackBuf);
-	// string buffers = string((char*) ackBuf, codedOut.ByteCount());
-	/*Base64 b64;
-	std::string encoded = b64.base64_encode(reinterpret_cast<const unsigned char*>(ackBuf), strlen(ackBuf));*/
-
-	// CCLOG("%s", bufff.c_str());
-
-	//end of file 
-	char *eot = new char[2];
-	eot[0] = '\r';
-	eot[1] = '\n';
-
-	codedOut.WriteRaw(eot, 2);
-	len = size;
-	return ackBuf;
+	else {
+	}
+	return request; 
 }
 
-
-char* NetworkManager::initRegisterMessage(int messid, int &len) 
+google::protobuf::Message* NetworkManager::initRegisterMessage(string username, string passsword,
+	string cp, string app_version, int client_type, string device_id) 
 {
 	BINRegisterRequest *request = new BINRegisterRequest(); 
 	if (DEBUG) {
@@ -281,106 +329,93 @@ char* NetworkManager::initRegisterMessage(int messid, int &len)
 		request->set_clienttype(1);
 		request->set_deviceid("000000000");
 	}
-
-	CCLOG("byte size: %d", request->ByteSize());
-
-	string myString = "";
-
-	std::vector<char> bytes(myString.begin(), myString.end());
-	bytes.push_back('\0');
-
-	//N byte session
-	char *session = &bytes[0];
-	//2 byte lenSession
-	int lenSession = strlen(session);
-	int size = request->ByteSize() + 11 + lenSession;
-	char* ackBuf = new char[size];
-	// ArrayOutputStream os(ackBuf, size);
-	google::protobuf::io::ArrayOutputStream arrayOut(ackBuf, size);
-	google::protobuf::io::CodedOutputStream codedOut(&arrayOut);
-
-	char* buf = new char[1];
-	buf[0] = 2;
-	codedOut.WriteRaw(buf, 1); //write os
-	char* dataSize = new char[4];
-
-	int data_size = request->ByteSize() + 4;
-	dataSize[0] = (data_size >> 24) & 0xFF;
-	dataSize[1] = (data_size >> 16) & 0xFF;
-	dataSize[2] = (data_size >> 8) & 0xFF;
-	dataSize[3] = (data_size >> 0) & 0xFF;
-	codedOut.WriteRaw(dataSize, 4); //write data size
-	char* char_len_session = new char[2];
-	char_len_session[0] = (lenSession >> 8) & 0xFF;
-	char_len_session[1] = (lenSession >> 0) & 0xFF;
-
-	// std::string str_len_session = string(char_len_session);
-
-	//2 byte length session
-	codedOut.WriteRaw(char_len_session, 2);
-
-	//n byte session
-	codedOut.WriteRaw(session, lenSession);
-	// loginRequest->SerializeToCodedStream(&codedOut);
-
-	char* mid = new char[2];
-
-	mid[0] = (messid >> 8) & 0xFF;
-	mid[1] = (messid >> 0) & 0xFF;
-
-	codedOut.WriteRaw(mid, 2);
-
-
-	request->SerializeToCodedStream(&codedOut);
-
-	string buffers = string(ackBuf);
-	// string buffers = string((char*) ackBuf, codedOut.ByteCount());
-	/*Base64 b64;
-	std::string encoded = b64.base64_encode(reinterpret_cast<const unsigned char*>(ackBuf), strlen(ackBuf));*/
-
-	// CCLOG("%s", bufff.c_str());
-
-	//end of file 
-	char *eot = new char[2];
-	eot[0] = '\r';
-	eot[1] = '\n';
-
-	codedOut.WriteRaw(eot, 2);
-	len = size; 
-	return ackBuf; 
+	else {
+	}
+	return request; 
 }
 
-void NetworkManager::getInitializeMessageToServer() {
-	int size;
+void NetworkManager::connectServer(const char* ip, const int port)
+{
+	if (DEBUG)
+		DefaultSocket::getInstance()->connectSocket("192.168.1.50", 1240);
+	else
+		DefaultSocket::getInstance()->connectSocket(ip, port);
+} 
 
+google::protobuf::Message* NetworkManager::initPingMessage(int disconnectTime) {
+	auto request = new BINPingRequest(); 
+	request->set_disconecttime(disconnectTime);
+	return request; 
+}
+
+void sendPing(char* ackBuf, int size) {
+	while (1) {
+		DefaultSocket::getInstance()->sendData(ackBuf, size);
+		std::this_thread::sleep_for(chrono::seconds::duration(5));
+	}
+}
+
+void NetworkManager::getPingMessageFromServer() {
+	google::protobuf::Message* request = initPingMessage(0);
+	int size; 
+	char* ackBuf = sendData(request, 2, NetworkManager::PING, "", size);
+	std::thread *t = new std::thread(sendPing, ackBuf, size);
+	if (t->joinable())
+		t->detach();
+}
+
+void NetworkManager::getInitializeMessageFromServer() {
 	//connect to server
 	DefaultSocket::getInstance()->connectSocket("192.168.1.50", 1240);
 
-	char* ackBuf = initInitializeMessage(1111, size);
+	google::protobuf::Message *request = initInitializeMessage();
+	int size; 
+	char* ackBuf = sendData(request, 2, NetworkManager::INITIALIZE, "", size); 
+
+	std::thread *t = new std::thread(callNetwork, ackBuf, size);
+	if (t->joinable())
+		t->detach(); 
+}
+
+void NetworkManager::getLoginMessageFromServer() {
+	google::protobuf::Message *request = initLoginMessage();
+	int size;
+	char* ackBuf = sendData(request, 2, NetworkManager::LOGIN, "", size);
+
 	std::thread *t = new std::thread(callNetwork, ackBuf, size);
 	if (t->joinable())
 		t->detach();
-	while (!NetworkManager::isInitialized()); 
-	getRegisterMessageToServer(); 
 }
 
-bool NetworkManager::_initialized = false; 
-
-void NetworkManager::getRegisterMessageToServer() 
+void NetworkManager::getRegisterMessageFromServer() 
 {
 
 	int size; 
-	char* ackBuf = initRegisterMessage(1000, size);
+	google::protobuf::Message *request = initRegisterMessage();
+	char* ackBuf = sendData(request, 2, NetworkManager::REGISTER, "", size);
 
-	
-	
-	/*while (!NetworkManager::isInitialized()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	};*/
+
 	std::thread *t = new std::thread(callNetwork, ackBuf, size);
 	if (t->joinable())
 		t->detach();
 	
+}
+
+void NetworkManager::recvMessage() {
+	while (1) {
+		vector<char> bufferRead(4096);
+		int canRead = DefaultSocket::getInstance()->readData(bufferRead, 4096);
+		vector<pair<google::protobuf::Message*, int>> listMessages = NetworkManager::parseFrom(bufferRead, 4096);
+		if (listMessages.size() > 0) {
+			NetworkManager::listEvent.push_back(listMessages);
+		}
+	}
+}
+
+void NetworkManager::listenData() {
+	std::thread *t = new std::thread(&NetworkManager::recvMessage, this);
+	if (t->joinable())
+		t->detach(); 
 }
 
 NetworkManager::NetworkManager() 
@@ -389,4 +424,10 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager()
 {
-}
+}	
+
+bool NetworkManager::_initialized = false;
+
+NetworkManager *NetworkManager::_instance = 0;
+
+vector<std::vector<std::pair<google::protobuf::Message*, int>>> NetworkManager::listEvent;

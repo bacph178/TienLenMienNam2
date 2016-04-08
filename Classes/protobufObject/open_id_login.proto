@@ -1,0 +1,28 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//Open Id Login 
+
+message BINOpenIdLoginRequest {
+	required int32 channel = 1;
+	required string openId = 2;
+    optional string firstName = 3;
+	optional string lastName = 4;
+	optional string email = 5;
+}
+
+message BINOpenIdLoginResponse {
+    required bool responseCode = 1;
+    optional string message = 2; 
+    optional int64 userId = 3;
+    optional string userName = 4;
+    optional int64 cash = 5;
+	optional int64 gold = 6;
+    optional int32 avatarId = 7;
+	optional string avatarPath = 8;
+	optional int32 level = 9;
+	optional int64 exp = 10;
+	optional string sessionId = 11;
+	optional bool enableDebugLag = 12;
+}
+
+//Open Id Login 

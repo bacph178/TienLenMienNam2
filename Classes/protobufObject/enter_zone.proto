@@ -1,0 +1,29 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//EnterZone 
+
+message BINEnterZoneRequest {
+	required int32 zoneId = 1;
+}
+
+message BINRoomConfig {
+	required int32 roomGroupId = 1;
+	optional string roomName = 2;
+	required bool vipRoom = 3;
+	required int32 minCash = 4;
+	required int32 minGold = 5;
+	required int32 minLevel = 6;
+	required int32 roomCapacity = 7;
+	required int32 playerSize = 8;
+	required int32 minBet = 9;
+	required int32 tax = 10;
+}
+
+message BINEnterZoneResponse {
+    required bool responseCode = 1;
+    optional string message = 2;
+	repeated BINRoomConfig cashRoomConfigs = 3;
+	repeated BINRoomConfig goldRoomConfigs = 4;
+}
+
+//End EnterZone 

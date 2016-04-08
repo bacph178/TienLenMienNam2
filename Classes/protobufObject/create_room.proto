@@ -1,0 +1,22 @@
+package net.jarlehansen.protobuf.javame;
+
+option java_package = "com.mi.game.network.data.bin";
+
+//CreateRoom 
+
+message BINCreateRoomRequest {
+	required int32 zoneId = 1;
+	required int32 roomGroupId = 2;
+	optional string roomName = 3;
+	required bool vipRoom = 4;
+	required int32 minBet = 5;
+	required int32 playerSize = 6;
+	optional string password = 7;
+}
+
+message BINCreateRoomResponse {
+    required bool responseCode = 1;
+    optional string message = 2;
+}
+
+//End CreateRoom 

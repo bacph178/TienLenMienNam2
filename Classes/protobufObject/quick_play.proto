@@ -1,0 +1,25 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//QuickPlay 
+
+message BINQuickPlayRequest {
+	required string deviceId = 1;
+	optional string deviceInfo = 2;
+}
+
+message BINQuickPlayResponse {
+    required bool responseCode = 1;
+    optional string message = 2; 
+    optional int64 userId = 3;
+    optional string userName = 4;
+    optional int64 cash = 5;
+	optional int64 gold = 6;
+    optional int32 avatarId = 7;
+	optional string avatarPath = 8;
+	optional int32 level = 9;
+	optional int64 exp = 10;
+	optional string sessionId = 11;
+	optional bool enableDebugLag = 12;
+}
+
+//End QuickPlay 

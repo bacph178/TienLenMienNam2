@@ -4,12 +4,11 @@
 #include "Utils/NetworkManager.h"
 
 
-void testRegister()
+void testPing()
 {
-	NetworkManager nm;
-	nm.getInitializeMessageToServer(); 
-	//while (!NetworkManager::isInitialized()); 
-	// nm.getRegisterMessageToServer();
+	NetworkManager::getInstance()->connectServer("192.168.1.50", 1240);
+	NetworkManager::getInstance()->getPingMessageFromServer(); 
+	NetworkManager::getInstance()->listenData();
 }
 
 Scene* IntroScene::createScene()
@@ -23,7 +22,7 @@ Scene* IntroScene::createScene()
     // add layer as a child to scene
     scene->addChild(layer);
 
-	testRegister(); 
+	testPing();
     // return the scene
     return scene;
 }

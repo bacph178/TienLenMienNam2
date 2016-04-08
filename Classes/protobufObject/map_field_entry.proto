@@ -1,0 +1,10 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//MapFieldEntry 
+
+message BINMapFieldEntry {
+	optional string key = 1;
+	optional string value = 2;
+}
+
+//End MapFieldEntry 

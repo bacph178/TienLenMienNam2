@@ -1,0 +1,16 @@
+option java_package = "com.mi.game.network.data.bin";
+
+//Player 
+import "map_field_entry.proto";
+
+message BINPlayer {
+	required int64 userId = 1;
+	optional string userName = 2;
+	optional int32 avatarId = 3;
+	required int32 level = 4;
+	required int64 cash = 5;
+	required int64 gold = 6;
+	repeated BINMapFieldEntry args = 7;
+}
+
+//End Player 
